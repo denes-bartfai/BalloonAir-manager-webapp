@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using server.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+AddDbContext();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -17,3 +21,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.Run();
+
+void AddDbContext()
+{
+    builder.Services.AddDbContext<BalloonAirContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("JobScribeConnection")));
+}
