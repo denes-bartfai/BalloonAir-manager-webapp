@@ -25,5 +25,5 @@ app.Run();
 void AddDbContext()
 {
     builder.Services.AddDbContext<BalloonAirContext>(options =>
-        options.UseSqlServer(builder.Configuration.GetConnectionString("JobScribeConnection")));
+        options.UseSqlServer(builder.Configuration.GetConnectionString("BalloonAirConnection")));
 }
