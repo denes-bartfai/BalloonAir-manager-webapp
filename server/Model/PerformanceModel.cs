@@ -7,6 +7,6 @@ public class PerformanceModel
     public string State { get; init; }
     public string City { get; init; }
     public string Event { get; init; }
-    public decimal Sales { get; init; }
+    public int Sales { get; init; }
     public string Comment { get; init; }
 }
