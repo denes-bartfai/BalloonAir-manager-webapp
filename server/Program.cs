@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using server.Data;
+using server.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+AddServices();
 AddDbContext();
 var app = builder.Build();
 
@@ -22,6 +24,12 @@ app.UseHttpsRedirection();
 
 app.Run();
 
+
+void AddServices()
+{
+    builder.Services.AddScoped<IPerformanceRepository, PerformanceRepository>();
+    builder.Services.AddScoped<IContactRepository, ContactRepository>();
+}
 void AddDbContext()
 {
     builder.Services.AddDbContext<BalloonAirContext>(options =>
