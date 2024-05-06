@@ -15,7 +15,7 @@ public class ContactRepository : IContactRepository
     
     public Task<List<ContactModel>> GetAll()
     {
-        return _context.Contact.Include(c=> c.Name).ToListAsync();
+        return _context.Contact.ToListAsync();
     }
 
     public Task<ContactModel?> GetByName(string name)
