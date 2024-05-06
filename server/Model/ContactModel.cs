@@ -6,11 +6,15 @@ public class ContactModel
 {
     public int Id { get; init; }
     
-    [Required]
     public string City { get; set; }
 
-    [Required]
-    public string Company { get; set; }
+    private string _company;
+
+    public string Company
+    {
+        get => string.IsNullOrEmpty(_company) ? $"{City} Önkormányzat" : _company;
+        set => _company = value;
+    }
 
     private string _position = "ügyintéző";
 
@@ -20,19 +24,11 @@ public class ContactModel
         set => _position = value?.ToLowerInvariant() ?? "ügyintéző";
     }
     
-    [Required]
     public string Name { get; set; }
     
-    [Required]
     [EmailAddress]
     public string Email { get; set; }
     
-    [Required]
     [Phone]
     public string PhoneNumber { get; set; }
-
-    public ContactModel()
-    {
-        Company = $"{City} Önkormányzat";
-    }
 }
