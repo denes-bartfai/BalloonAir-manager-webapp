@@ -15,17 +15,17 @@ public class PerformanceRepository : IPerformanceRepository
     
     public Task<List<PerformanceModel>> GetAll()
     {
-        return _context.Performance.Include(p=> p.Event).ToListAsync();
+        return _context.Performance.ToListAsync();
     }
 
     public Task<PerformanceModel?> GetByName(string name)
     {
-        return _context.Performance.Include(p=> p.Event).SingleOrDefaultAsync(e => e.Event == name);
+        return _context.Performance.FirstOrDefaultAsync(e => e.Event == name);
     }
 
     public Task<PerformanceModel?> GetById(int id)
     {
-        return _context.Performance.Include(p => p.Event).SingleOrDefaultAsync(e => e.Id == id);
+        return _context.Performance.SingleOrDefaultAsync(e => e.Id == id);
     }
 
     public async Task Add(PerformanceModel performance)
