@@ -10,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+AddCors();
 AddServices();
 AddDbContext();
 var app = builder.Build();
@@ -27,6 +28,19 @@ app.MapControllers();
 
 app.Run();
 
+void AddCors()
+{
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("MyPolicy",
+            builder =>
+            {
+                builder.WithOrigins("http://localhost:5173")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
+    });
+}
 
 void AddServices()
 {
