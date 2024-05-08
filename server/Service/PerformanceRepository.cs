@@ -59,4 +59,18 @@ public class PerformanceRepository : IPerformanceRepository
         
         return performanceToUpdate;
     }
+
+    public async Task<List<PerformanceModel>> GetLatest(int count = 5)
+    {
+        return await _context.Performance.OrderByDescending(p => p.Date).Take(count).ToListAsync();
+    }
+
+    public async Task<List<PerformanceModel>> GetTopSales(int count = 5)
+    {
+        int currentYear = DateTime.Now.Year;
+        return await _context.Performance
+            .Where(p => p.Date.Year == currentYear)
+            .OrderByDescending(p => p.Sales)
+            .Take(count).ToListAsync();
+    }
 }

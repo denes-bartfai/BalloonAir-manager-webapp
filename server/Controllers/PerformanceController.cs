@@ -137,4 +137,34 @@ public class PerformanceController : ControllerBase
             return StatusCode(500, "An error occurred while updating performance.");
         }
     }
+
+    [HttpGet]
+    public async Task<ActionResult> GetLatest(int count = 5)
+    {
+        try
+        {
+            var latest = await _performanceRepository.GetLatest(count);
+            return Ok(latest);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while fetching the latest uploaded records." );
+            return StatusCode(500, "An error occurred while fetching the latest uploaded records.");
+        }
+    }
+
+    [HttpGet]
+    public async Task<ActionResult> GetTopSales(int count = 5)
+    {
+        try
+        {
+            var topSales = await _performanceRepository.GetTopSales(count);
+            return Ok(topSales);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while fetching the top sales in the current year.");
+            return StatusCode(500, "An error occurred while fetching the top sales in the current year.");  
+        }
+    }
 }

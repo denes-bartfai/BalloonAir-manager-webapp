@@ -15,4 +15,7 @@ public interface IPerformanceRepository
     Task Delete(PerformanceModel performance);
 
     Task<PerformanceModel> Update(int id, PerformanceModel performance);
+    Task<List<PerformanceModel>> GetLatest(int count);
+    Task<List<PerformanceModel>> GetTopSales(int count);
+
 }
