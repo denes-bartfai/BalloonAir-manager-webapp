@@ -28,10 +28,12 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  margin-left: 185px;
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
+
 

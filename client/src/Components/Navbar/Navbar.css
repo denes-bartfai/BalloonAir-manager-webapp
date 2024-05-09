@@ -1,0 +1,27 @@
+.navbar-container {
+    display: flex;
+  }
+
+  .drawer {
+    width: 240px;
+    
+    flex-shrink: 0;
+  }
+
+  .drawer-paper {
+    width: 180px;
+    background-color: rgba(255, 255, 255, 0.9); 
+  }
+
+  .page-content {
+    flex-grow: 1;
+  }
+
+  .navbar-container .list-item:hover {
+    background-color: rgba(126, 87, 198, 1);
+    color: white;
+  }
+
+  .multi-list {
+    top: 6%;
+  }
