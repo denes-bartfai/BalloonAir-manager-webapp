@@ -34,10 +34,16 @@ public class ContactRepository : IContactRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task Delete(ContactModel contact)
+    public async Task Delete(int contactId)
     {
-        _context.Remove(contact);
-        await _context.SaveChangesAsync();
+        var contact = await _context.Contact.FindAsync(contactId);
+
+        if (contact != null)
+        {
+            _context.Remove(contact);
+            await _context.SaveChangesAsync();
+        }
+        
     }
 
     public async Task<ContactModel> Update(int id, ContactModel contact)

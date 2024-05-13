@@ -12,7 +12,7 @@ public interface IContactRepository
 
     Task Add(ContactModel contact);
 
-    Task Delete(ContactModel contact);
+    Task Delete(int contactId);
 
     Task<ContactModel> Update(int id, ContactModel contact);
 }
