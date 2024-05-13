@@ -9,7 +9,7 @@ namespace server.Controllers;
 public class ContactController : ControllerBase
 {
      private readonly ILogger<ContactController> _logger;
-    private readonly IContactRepository _contactRepository;
+     private readonly IContactRepository _contactRepository;
 
     public ContactController(ILogger<ContactController> logger, IContactRepository contactRepository)
     {
@@ -23,8 +23,9 @@ public class ContactController : ControllerBase
         try
         {
             var contact = await _contactRepository.GetAll();
+            var response = new { res = contact };
 
-            return Ok(contact);
+            return Ok(response);
         }
         catch (Exception ex)
         {
@@ -40,13 +41,14 @@ public class ContactController : ControllerBase
         try
         {
             var contact = await _contactRepository.GetByName(contactName);
+            var response = new { res = contact };
 
             if (contact == null)
             {
                 return NotFound($"Contact {contactName} not found");
             }
 
-            return Ok(contact);
+            return Ok(response);
         }
         catch (Exception ex)
         {
@@ -61,13 +63,14 @@ public class ContactController : ControllerBase
         try
         {
             var contact =await _contactRepository.GetById(contactId);
+            var response = new { res = contact };
 
             if (contact == null)
             {
                 return NotFound($"Contact {contactId} not found");
             }
 
-            return Ok(contact);
+            return Ok(response);
         }
         catch (Exception ex)
         {
@@ -97,23 +100,25 @@ public class ContactController : ControllerBase
     }
 
     [HttpDelete]
-    public async Task<ActionResult> DeleteContact(string contactName)
+    public async Task<ActionResult> DeleteContact(int contactId)
     {
         try
         {
-            var contact = await _contactRepository.GetByName(contactName);
+            var contact = await _contactRepository.GetById(contactId);
+           
 
             if (contact == null)
             {
-                return NotFound($"Contact {contactName} not found");
+                return NotFound($"Contact with ID {contactId} not found");
             }
 
-            await _contactRepository.Delete(contact);
-            return Ok($"Contact {contactName} has been deleted.");
+            await _contactRepository.Delete(contactId);
+            var response = new {res = $"Contact with ID {contactId} has been deleted."};
+            return Ok(response);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"An error occurred while deleting contact: {contactName}");
+            _logger.LogError(ex, $"An error occurred while deleting contact with ID: {contactId}");
             return StatusCode(500, "An error occurred while deleting contact.");
         }
     }
@@ -124,12 +129,13 @@ public class ContactController : ControllerBase
         try
         {
             var updatedContact = await _contactRepository.Update(id, contactModel);
+            var response = new { res = updatedContact };
             if (updatedContact == null)
             {
                 return NotFound($"Contact with ID{id} not found");
             }
 
-            return Ok(updatedContact);
+            return Ok(response);
         }
         catch (Exception ex)
         {
