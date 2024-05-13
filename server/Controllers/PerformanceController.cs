@@ -23,8 +23,8 @@ public class PerformanceController : ControllerBase
         try
         {
             var performance = await _performanceRepository.GetAll();
-
-            return Ok(performance);
+            var response = new { res = performance };
+            return Ok(response);
         }
         catch (Exception ex)
         {
@@ -40,13 +40,14 @@ public class PerformanceController : ControllerBase
         try
         {
             var performance = await _performanceRepository.GetByName(performanceName);
+            var response = new { res = performance };
 
             if (performance == null)
             {
                 return NotFound($"Performance {performanceName} not found");
             }
 
-            return Ok(performance);
+            return Ok(response);
         }
         catch (Exception ex)
         {
@@ -61,13 +62,14 @@ public class PerformanceController : ControllerBase
         try
         {
             var performance =await _performanceRepository.GetById(performanceId);
+            var response = new { res = performance };
 
             if (performance == null)
             {
                 return NotFound($"Performance {performanceId} not found");
             }
 
-            return Ok(performance);
+            return Ok(response);
         }
         catch (Exception ex)
         {
@@ -97,23 +99,24 @@ public class PerformanceController : ControllerBase
     }
 
     [HttpDelete]
-    public async Task<ActionResult> DeletePerformance(string performanceName)
+    public async Task<ActionResult> DeletePerformance(int performanceId)
     {
         try
         {
-            var performance = await _performanceRepository.GetByName(performanceName);
+            var performance = await _performanceRepository.GetById(performanceId);
 
             if (performance == null)
             {
-                return NotFound($"Performance {performanceName} not found");
+                return NotFound($"Performance with ID {performanceId} not found");
             }
 
-            await _performanceRepository.Delete(performance);
-            return Ok($"Performance {performanceName} has been deleted.");
+            await _performanceRepository.Delete(performanceId);
+            var response = new { res = $"Performance with ID {performanceId} has been deleted." };
+            return Ok(response);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"An error occurred while deleting performance: {performanceName}");
+            _logger.LogError(ex, $"An error occurred while deleting performance with ID: {performanceId}");
             return StatusCode(500, "An error occurred while deleting performance.");
         }
     }
@@ -124,12 +127,13 @@ public class PerformanceController : ControllerBase
         try
         {
             var updatedPerformance = await _performanceRepository.Update(id, performanceModel);
+            var response = new { res = updatedPerformance };
             if (updatedPerformance == null)
             {
                 return NotFound($"Performance with ID{id} not found");
             }
 
-            return Ok(updatedPerformance);
+            return Ok(response);
         }
         catch (Exception ex)
         {
@@ -144,7 +148,8 @@ public class PerformanceController : ControllerBase
         try
         {
             var latest = await _performanceRepository.GetLatest(count);
-            return Ok(latest);
+            var response = new { res = latest };
+            return Ok(response);
         }
         catch (Exception ex)
         {
@@ -159,7 +164,8 @@ public class PerformanceController : ControllerBase
         try
         {
             var topSales = await _performanceRepository.GetTopSales(count);
-            return Ok(topSales);
+            var response = new { res = topSales };
+            return Ok(response);
         }
         catch (Exception ex)
         {

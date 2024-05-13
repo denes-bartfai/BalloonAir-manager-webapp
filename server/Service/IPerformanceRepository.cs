@@ -12,7 +12,7 @@ public interface IPerformanceRepository
 
     Task Add(PerformanceModel performance);
 
-    Task Delete(PerformanceModel performance);
+    Task Delete(int performanceId);
 
     Task<PerformanceModel> Update(int id, PerformanceModel performance);
     Task<List<PerformanceModel>> GetLatest(int count);

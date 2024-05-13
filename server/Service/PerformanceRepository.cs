@@ -34,10 +34,16 @@ public class PerformanceRepository : IPerformanceRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task Delete(PerformanceModel performance)
+    public async Task Delete(int performanceId)
     {
-        _context.Remove(performance);
-        await _context.SaveChangesAsync();
+        var performance = await _context.Performance.FindAsync(performanceId);
+
+        if (performance != null)
+        {
+            _context.Remove(performance);
+            await _context.SaveChangesAsync();
+        }
+        
     }
 
     public async Task<PerformanceModel> Update(int id, PerformanceModel performance)
