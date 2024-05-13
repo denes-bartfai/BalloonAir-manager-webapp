@@ -30,16 +30,15 @@ app.Run();
 
 void AddCors()
 {
-    builder.Services.AddCors(options =>
-    {
-        options.AddPolicy("MyPolicy",
-            builder =>
-            {
-                builder.WithOrigins("http://localhost:5173")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod();
-            });
-    });
+    builder.Services.AddCors(options => options.AddPolicy("CorsPolicy",
+        builder =>
+        {
+            builder
+                .WithOrigins("http://localhost:5173")                        
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials();
+        })); 
 }
 
 void AddServices()
