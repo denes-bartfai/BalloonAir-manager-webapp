@@ -57,6 +57,21 @@ const Sales = () => {
     setCurrentPage(totalPage);
   }
 
+  const handleDelete = async (id) => {
+    try{
+      const res = await fetch(`/api/Performance/DeletePerformance?performanceId=${id}`, {
+        method: "DELETE"
+      });
+      if(res.ok){
+        fetchData();
+      } else {
+        console.error("Failed to delete peformance with ID: ${id}");
+      }
+    } catch(error){
+      console.error(`Error deleting performance with ID: ${id}`, error);
+    }
+  }
+
   const renderData = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -68,8 +83,12 @@ const Sales = () => {
         <TableCell>{performance.event}</TableCell>
         <TableCell>{performance.sales.toLocaleString()}</TableCell>
         <TableCell>{performance.comment}</TableCell>
-        <TableCell></TableCell>
-        <TableCell></TableCell>
+        <TableCell>
+        </TableCell>
+        <TableCell>
+          <Button variant="contained" color="secondary" onClick={() => handleDelete(performance.id)}>Törlés</Button>
+        </TableCell>
+        
     </TableRow>
     ))
   };
