@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, IconButton } from "@mui/material";
 import {NavigateBefore, NavigateNext, FirstPage, LastPage} from "@mui/icons-material";
 
+import UpdateModal from "./UpdateModal";
 import "./Sales.css";
 
 const Sales = () => {
@@ -9,6 +10,8 @@ const Sales = () => {
   const [performanceData, setPerformanceData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [selectedPerformance, setSelectedPerformance] = useState(null);
 
   useEffect(() =>{
     fetchData();
@@ -59,7 +62,7 @@ const Sales = () => {
 
   const handleDelete = async (id) => {
     try{
-      const res = await fetch(`/api/Performance/DeletePerformance?performanceId=${id}`, {
+      const res = await fetch("/api/Performance/DeletePerformance?performanceId=${id}", {
         method: "DELETE"
       });
       if(res.ok){
@@ -69,6 +72,32 @@ const Sales = () => {
       }
     } catch(error){
       console.error(`Error deleting performance with ID: ${id}`, error);
+    }
+  }
+
+  const handleUpdate = (performance) => {
+    setSelectedPerformance(performance);
+    setIsUpdateModalOpen(true);
+  }
+
+  const handleUpdateSubmit = async (updatedPerformance) => {
+    try{
+      const res = await fetch(`/api/Performance/PatchPerformance?id=${updatedPerformance.id}`, {
+        method: "PATCH",
+        headers:{
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(updatedPerformance),
+      });
+      if(res.ok){
+        fetchData();
+        setIsUpdateModalOpen(false);
+        selectedPerformance(null);
+      } else {
+        console.error(`Failed to update performance with ID: ${updatedPerformance.id}`);
+      }
+    } catch (error) {
+      console.error(`Error updating performance with ID: ${updatedPerformance.id}`, error);
     }
   }
 
@@ -84,6 +113,7 @@ const Sales = () => {
         <TableCell>{performance.sales.toLocaleString()}</TableCell>
         <TableCell>{performance.comment}</TableCell>
         <TableCell>
+          <Button variant="contained" color="primary" onClick={() => handleUpdate(performance)}>Javítás</Button>
         </TableCell>
         <TableCell>
           <Button variant="contained" color="secondary" onClick={() => handleDelete(performance.id)}>Törlés</Button>
@@ -146,8 +176,15 @@ const Sales = () => {
           <p>No performance available.</p>
         )}
       </div>
+      {isUpdateModalOpen && (
+        <UpdateModal
+        performance={selectedPerformance}
+        onClose={() => setIsUpdateModalOpen(false)}
+        onSubmit={handleUpdateSubmit}
+        />
+      )}
     </div>
   );
-}
+};
 
 export default Sales
