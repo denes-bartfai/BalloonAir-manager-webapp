@@ -54,6 +54,16 @@ const Contacts = () => {
     setCurrentPage(totalPage);
   };
 
+  const formatPhoneNumber = (phoneNumber) => {
+    if(phoneNumber.length === 11){//Mobile number
+      return `${phoneNumber.slice(0,2)} (${phoneNumber.slice(2,4)}) ${phoneNumber.slice(4,7)} - ${phoneNumber.slice(7)}`;
+    } else if (phoneNumber.length === 10){ //Landline numbers
+      return `${phoneNumber.slice(0,2)} (${phoneNumber.slice(2,3)}) ${phoneNumber.slice(3,6)} - ${phoneNumber.slice(6)}`;
+    } 
+    return phoneNumber;
+  }
+  
+
 const renderData = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -65,7 +75,7 @@ const renderData = () => {
       <TableCell>{contact.position}</TableCell>
       <TableCell>{contact.name}</TableCell>
       <TableCell>{contact.email}</TableCell>
-      <TableCell>{contact.phoneNumber}</TableCell>
+      <TableCell>{formatPhoneNumber(contact.phoneNumber)}</TableCell>
     </TableRow>
   ))
 };
