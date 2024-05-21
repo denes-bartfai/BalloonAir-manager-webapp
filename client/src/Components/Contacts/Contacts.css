@@ -1,5 +1,42 @@
+.table-head{
+    background-color: gainsboro;
+    font-weight: bold;
+}
+
+.contact-card{
+    width: 157%;
+    margin-left: 80%;
+}
 .contact-container{
-    margin-left: 30%;
-    margin-right: -40%;
-    margin-top: -20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: -30%;
+}
+
+.contact-pagination-container{
+    margin-top: 2%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 15%;
+    margin-top: 3%;
+}
+
+.table-container {
+    max-width: 1200px; 
+    overflow-x: auto;
+    margin-left: 15%;
+  }
+
+  .table {
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  .contact-table-head th,
+.contact-table-body td {
+  width: 130px;
+  white-space: nowrap;
+  box-sizing: border-box;
 }
