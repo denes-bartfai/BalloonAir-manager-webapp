@@ -3,6 +3,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import {NavigateBefore, NavigateNext, FirstPage, LastPage} from "@mui/icons-material";
 
 import UpdateModal from "./UpdateModal";
+import AddPerformanceForm from "./AddPerformanceForm";
 import "./Sales.css";
 
 const Sales = () => {
@@ -101,6 +102,25 @@ const Sales = () => {
     }
   }
 
+  const handleAddPerformance = async (newPerformance) => {
+    try{
+      const res = await fetch("/api/Performance/AddPerformance", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body:JSON.stringify(newPerformance),
+      });
+      if(res.ok){
+        fetchData();
+      } else{
+        console.error("Failed to add performance.");
+      }
+    } catch (error) {
+      console.error("Error adding performance.", error);
+    }
+  };
+
   const renderData = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -127,6 +147,9 @@ const Sales = () => {
     <div className="sales-container">
       <h2>Értékesítés</h2>
       <div className="card">
+        <div className="sales-add-container">
+        <AddPerformanceForm onAdd={handleAddPerformance} />
+        </div>
         {performanceData.length > 0 ? (
           <div>
           <TableContainer component={Paper} className="table-container">

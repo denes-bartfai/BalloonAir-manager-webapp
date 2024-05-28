@@ -4,34 +4,51 @@
 }
 
 .sales-container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-left: 15%;
-    margin-top: -32%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 1%;
+  margin-top: 0%;
 }
 
-.pagination-container{
-    margin-top: 2%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: 15%;
-    margin-top: 0%; 
+.card {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1em;
+  width: 100%;
+  max-width: 1300px;
+}
+
+.sales-add-container {
+  grid-column: 1 / 2;
+  max-width: 230px; 
+  max-height: 100px; 
+  margin-right: 1em; 
 }
 
 .table-container {
-    max-width: 1200px; 
-    overflow-x: auto;
-    margin-left: 15%;
-  }
+  grid-column: 2 / 3;
+  width: 800%; /* Relative width */
+  max-width: 100%; /* Ensure it doesn’t exceed the parent’s width */
+  overflow-x: auto;
+  margin: 0 auto; /* Center the table container */
+}
 
-  .table {
-    width: 100%;
-    table-layout: fixed;
-  }
+.pagination-container{
+  margin-top: 2%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 15%;
+  margin-top: 0%; 
+}
 
-  .table-head th,
+.table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.table-head th,
 .table-body td {
   width: 120px;
 }
