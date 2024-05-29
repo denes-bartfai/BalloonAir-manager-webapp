@@ -4,14 +4,18 @@
 }
 
 .contact-card{
-    width: 157%;
-    margin-left: 80%;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1em;
+  width: 100%;
+  max-width: 1300px;
 }
 .contact-container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: -30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 1%;
+  margin-top: 0%;
 }
 
 .contact-pagination-container{

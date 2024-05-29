@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, IconButton } from "@mui/material";
 import {NavigateBefore, NavigateNext, FirstPage, LastPage} from "@mui/icons-material";
 
+import UpdateContacts from "./UpdateContacts";
 import "./Contacts.css";
 
 
@@ -10,6 +11,8 @@ const Contacts = () => {
   const [contactData, setContactData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [selectedContact, setSelectedContact] = useState(null);
 
   useEffect(() =>{
     fetchData();
@@ -65,7 +68,7 @@ const Contacts = () => {
   
   const handleDelete = async (id) => {
     try{
-      const res = await fetch(`/api/Contact/DeleteContact?contactId=${id}`, {
+      const res = await fetch("/api/Contact/DeleteContact?contactId=${id}", {
         method: "DELETE"
       });
       if(res.ok){
@@ -77,6 +80,33 @@ const Contacts = () => {
       console.error(`Error deleting contact with ID: ${id}`, error);
     }
   }
+
+  const handleUpdate = (contact) => {
+    setSelectedContact(contact);
+    setIsUpdateModalOpen(true);
+  }
+
+  const handleUpdateSubmit = async (updatedContact) => {
+    try{
+      const res = await fetch(`/api/Contact/PatchContact?id=${updatedContact.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(updatedContact)
+      });
+      if(res.ok){
+        fetchData();
+        setIsUpdateModalOpen(false);
+        selectedContact(null);
+      } else {
+        console.error(`Failed to update contact with ID:${updatedContact.id}`);
+      }
+    } catch (error) {
+      console.error(`Error updating cintact with ID:${updatedContact.id}`, error);
+    }
+  }
+
 
 const renderData = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -91,7 +121,9 @@ const renderData = () => {
       <TableCell>{contact.email}</TableCell>
       <TableCell>{formatPhoneNumber(contact.phoneNumber)}</TableCell>
       <TableCell>
-
+      <Button variant="contained" color="primary" onClick={() => handleUpdate(contact)}>
+        Javítás
+      </Button>
       </TableCell>
       <TableCell>
         <Button variant="contained" color="secondary" onClick={() => handleDelete(contact.id)}>
@@ -101,7 +133,6 @@ const renderData = () => {
     </TableRow>
   ))
 };
-  
 
   return (
     <div className="contact-container">
@@ -156,6 +187,13 @@ const renderData = () => {
           <p>No contact available.</p>
         )}
       </div>
+      {isUpdateModalOpen && (
+        <UpdateContacts
+          contact={selectedContact}
+          onClose={() => setIsUpdateModalOpen(false)}
+          onSubmit={handleUpdateSubmit}
+        />
+      )}
     </div>
   );
 }
