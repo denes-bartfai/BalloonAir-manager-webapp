@@ -63,6 +63,20 @@ const Contacts = () => {
     return phoneNumber;
   }
   
+  const handleDelete = async (id) => {
+    try{
+      const res = await fetch(`/api/Contact/DeleteContact?contactId=${id}`, {
+        method: "DELETE"
+      });
+      if(res.ok){
+        fetchData();
+      } else {
+        console.error("Failed to delete contact with ID: ${id}");
+      }
+    } catch(error){
+      console.error(`Error deleting contact with ID: ${id}`, error);
+    }
+  }
 
 const renderData = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -76,6 +90,14 @@ const renderData = () => {
       <TableCell>{contact.name}</TableCell>
       <TableCell>{contact.email}</TableCell>
       <TableCell>{formatPhoneNumber(contact.phoneNumber)}</TableCell>
+      <TableCell>
+
+      </TableCell>
+      <TableCell>
+        <Button variant="contained" color="secondary" onClick={() => handleDelete(contact.id)}>
+          Törlés
+        </Button>
+      </TableCell>
     </TableRow>
   ))
 };
@@ -97,6 +119,8 @@ const renderData = () => {
                   <TableCell>Név</TableCell>
                   <TableCell>Email</TableCell>
                   <TableCell>Telefonszám</TableCell>
+                  <TableCell>Javítás</TableCell>
+                  <TableCell>Törlés</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
