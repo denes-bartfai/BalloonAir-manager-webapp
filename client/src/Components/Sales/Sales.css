@@ -28,10 +28,10 @@
 
 .table-container {
   grid-column: 2 / 3;
-  width: 800%; /* Relative width */
-  max-width: 100%; /* Ensure it doesn’t exceed the parent’s width */
+  width: 800%; 
+  max-width: 100%; 
   overflow-x: auto;
-  margin: 0 auto; /* Center the table container */
+  margin: 0 auto;
 }
 
 .pagination-container{

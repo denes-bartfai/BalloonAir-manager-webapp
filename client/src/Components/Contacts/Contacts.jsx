@@ -3,6 +3,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import {NavigateBefore, NavigateNext, FirstPage, LastPage} from "@mui/icons-material";
 
 import UpdateContacts from "./UpdateContacts";
+import AddContactForm from "./AddContactForm";
 import "./Contacts.css";
 
 
@@ -108,6 +109,25 @@ const Contacts = () => {
   }
 
 
+const handleAddContact = async (newContact) => {
+  try{
+    const res = await fetch("/api/Contact/AddContact", {
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+      },
+      body:JSON.stringify(newContact),
+    });
+    if(res.ok){
+      fetchData();
+    } else {
+      console.error("Failed to add contact,");
+    }
+  } catch (error){
+    console.error("Error adding performance.", error);
+  }
+}
+
 const renderData = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -138,6 +158,9 @@ const renderData = () => {
     <div className="contact-container">
       <h2>Kontaktlista</h2>
       <div className="contact-card">
+        <div className="contact-add-container">
+          <AddContactForm onAdd={handleAddContact} />
+        </div>
         {contactData.length > 0 ? (
           <div>
           <TableContainer component={Paper}>
