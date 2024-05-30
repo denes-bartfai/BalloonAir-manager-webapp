@@ -11,6 +11,8 @@ const Contacts = () => {
 
   const [contactData, setContactData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortColumn, setSortColumn] = useState(null);
+  const [sortDirection, setSortDirection] = useState("asc");
   const itemsPerPage = 4;
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [selectedContact, setSelectedContact] = useState(null);
@@ -128,6 +130,22 @@ const handleAddContact = async (newContact) => {
   }
 }
 
+const handleSort = (column) => {
+  const newSortDirection = sortColumn === column && sortDirection === "asc" ? "desc" : "asc";
+  const sortedData = [...contactData].sort((a,b) => {
+    if(a[column] < b[column]){
+      return newSortDirection === "asc" ? -1 : 1;
+    }
+    if(a[column] > b[column]){
+      return newSortDirection === "asc" ? 1 : -1;
+    }
+    return 0;
+  });
+  setSortColumn(column);
+  setSortDirection(newSortDirection);
+  setContactData(sortedData);
+}
+
 const renderData = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -167,12 +185,12 @@ const renderData = () => {
             <Table>
               <TableHead className="contact-table-head">
                 <TableRow>
-                  <TableCell>Város</TableCell>
-                  <TableCell>Intémény</TableCell>
-                  <TableCell>Pozíció</TableCell>
-                  <TableCell>Név</TableCell>
-                  <TableCell>Email</TableCell>
-                  <TableCell>Telefonszám</TableCell>
+                  <TableCell onClick={() => handleSort("city")}>Város</TableCell>
+                  <TableCell onClick={() => handleSort("company")}>Intémény</TableCell>
+                  <TableCell onClick={() => handleSort("position")}>Pozíció</TableCell>
+                  <TableCell onClick={() => handleSort("name")}>Név</TableCell>
+                  <TableCell onClick={() => handleSort("email")}>Email</TableCell>
+                  <TableCell onClick={() => handleSort("phoneNumber")}>Telefonszám</TableCell>
                   <TableCell>Javítás</TableCell>
                   <TableCell>Törlés</TableCell>
                 </TableRow>
