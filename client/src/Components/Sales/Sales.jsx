@@ -10,6 +10,8 @@ const Sales = () => {
 
   const [performanceData, setPerformanceData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortColumn, setSortColumn] = useState(null);
+  const [sortDirection, setSortDirection] = useState("asc");
   const itemsPerPage = 4;
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [selectedPerformance, setSelectedPerformance] = useState(null);
@@ -121,6 +123,22 @@ const Sales = () => {
     }
   };
 
+  const handleSort = (column) =>{
+    const newSortDirection = sortColumn === column && sortDirection === "asc" ? "desc" : "asc";
+    const sortedData = [...performanceData].sort((a,b) => {
+      if(a[column] < b[column]){
+        return newSortDirection === "asc" ? -1 : 1;
+      }
+      if(a[column] > b[column]){
+        return newSortDirection === "asc" ? 1 : -1;
+      }
+      return 0;
+    });
+    setSortColumn(column);
+    setSortDirection(newSortDirection);
+    setPerformanceData(sortedData);
+  };
+
   const renderData = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -156,12 +174,12 @@ const Sales = () => {
             <Table>
               <TableHead className="table-head">
                 <TableRow>
-                  <TableCell>Dátum</TableCell>
-                  <TableCell>Megye</TableCell>
-                  <TableCell>Város</TableCell>
-                  <TableCell>Esemény</TableCell>
-                  <TableCell>Eladás</TableCell>
-                  <TableCell>Komment</TableCell>
+                  <TableCell onClick={() => handleSort("date")}>Dátum</TableCell>
+                  <TableCell onClick={() => handleSort("state")}>Megye</TableCell>
+                  <TableCell onClick={() => handleSort("city")}>Város</TableCell>
+                  <TableCell onClick={() => handleSort("event")}>Esemény</TableCell>
+                  <TableCell onClick={() => handleSort("sales")}>Eladás</TableCell>
+                  <TableCell onClick={() => handleSort("comment")}>Komment</TableCell>
                   <TableCell>Javítás</TableCell>
                   <TableCell>Törlés</TableCell>
                 </TableRow>
