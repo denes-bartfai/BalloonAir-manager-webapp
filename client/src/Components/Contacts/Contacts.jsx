@@ -13,6 +13,7 @@ const Contacts = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortColumn, setSortColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
+  const [filter, setFilter] = useState("");
   const itemsPerPage = 4;
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [selectedContact, setSelectedContact] = useState(null);
@@ -146,11 +147,22 @@ const handleSort = (column) => {
   setContactData(sortedData);
 }
 
+const handleFilterChange = (event) => {
+  setFilter(event.target.value.toLowerCase());
+  setCurrentPage(1);
+}
+
+const filterData = contactData.filter(contact =>
+  Object.values(contact).some(value =>
+    value.toString().toLowerCase().includes(filter)
+  )
+);
+
 const renderData = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  return contactData.slice(startIndex, endIndex).map((contact, index) => (
+  return filterData.slice(startIndex, endIndex).map((contact, index) => (
     <TableRow key={index}>
       <TableCell>{contact.city}</TableCell>
       <TableCell>{contact.company}</TableCell>
@@ -178,6 +190,17 @@ const renderData = () => {
       <div className="contact-card">
         <div className="contact-add-container">
           <AddContactForm onAdd={handleAddContact} />
+        </div>
+        <div className="contact-general-filter">
+        <TextField
+          label="Filter"
+          variant="filled"
+          size="small"
+          fullWidth
+          value={filter}
+          onChange={handleFilterChange}
+          style={{ marginBottom: "2rem"}}
+        />
         </div>
         {contactData.length > 0 ? (
           <div>

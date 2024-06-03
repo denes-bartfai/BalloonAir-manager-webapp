@@ -26,6 +26,11 @@
   margin-right: 1em; 
 }
 
+.contact-general-filter {
+  grid-column: 1 / 2;
+  margin-top: -70%;
+}
+
 .table-container {
   grid-column: 2 / 3;
   width: 800%; 
