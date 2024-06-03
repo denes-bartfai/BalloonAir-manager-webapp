@@ -26,6 +26,11 @@
   margin-right: 1em; 
 }
 
+.sales-general-filter {
+  grid-column: 1 / 2;
+  margin-top: -40%;
+}
+
 .table-container {
   grid-column: 2 / 3;
   width: 800%; 

@@ -12,6 +12,7 @@ const Sales = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortColumn, setSortColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
+  const [filter, setFilter] = useState("");
   const itemsPerPage = 4;
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [selectedPerformance, setSelectedPerformance] = useState(null);
@@ -139,10 +140,21 @@ const Sales = () => {
     setPerformanceData(sortedData);
   };
 
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value.toLowerCase());
+    setCurrentPage(1);
+  }
+
+  const filteredData = performanceData.filter(performance =>
+    Object.values(performance).some(value => 
+      value.toString().toLowerCase().includes(filter)
+    )
+  );
+
   const renderData = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return performanceData.slice(startIndex, endIndex).map((performance, index) => (
+    return filteredData.slice(startIndex, endIndex).map((performance, index) => (
       <TableRow key={index}>
         <TableCell>{performance.date.substring(0, 10)}</TableCell>
         <TableCell>{performance.state}</TableCell>
@@ -167,6 +179,17 @@ const Sales = () => {
       <div className="card">
         <div className="sales-add-container">
         <AddPerformanceForm onAdd={handleAddPerformance} />
+        </div>
+        <div className="sales-general-filter">
+        <TextField
+          label="Filter"
+          variant="filled"
+          size="small"
+          fullWidth
+          value={filter}
+          onChange={handleFilterChange}
+          style={{ marginBottom: "2rem"}}
+        />
         </div>
         {performanceData.length > 0 ? (
           <div>
