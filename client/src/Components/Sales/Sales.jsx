@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, IconButton } from "@mui/material";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, IconButton, Grid, Box } from "@mui/material";
 import {NavigateBefore, NavigateNext, FirstPage, LastPage} from "@mui/icons-material";
 
 import UpdateModal from "./UpdateModal";
@@ -13,7 +13,14 @@ const Sales = () => {
   const [sortColumn, setSortColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
   const [filter, setFilter] = useState("");
-  const itemsPerPage = 4;
+  const [dateFilter, setDateFilter] = useState("");
+  const [stateFilter, setStateFilter] = useState("");
+  const [cityFilter, setCityFilter] = useState("");
+  const [eventFilter, setEventFilter] = useState("");
+  const [salesFilter, setSalesFilter] = useState("");
+  const [commentFilter, setCommentFilter] = useState("");
+
+  const itemsPerPage = 8;
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [selectedPerformance, setSelectedPerformance] = useState(null);
 
@@ -143,12 +150,48 @@ const Sales = () => {
   const handleFilterChange = (event) => {
     setFilter(event.target.value.toLowerCase());
     setCurrentPage(1);
-  }
+  };
+
+  const handleDateFilterChange = (event) => {
+    setDateFilter(event.target.value.toLowerCase());
+    setCurrentPage(1);
+  };
+
+  const handleStateFilterChange = (event) => {
+    setStateFilter(event.target.value.toLowerCase());
+    setCurrentPage(1);
+  };
+
+  const handleCityFilterChange = (event) => {
+    setCityFilter(event.target.value.toLowerCase());
+    setCurrentPage(1);
+  };
+
+  const handleEventFilterChange = (event) => {
+    setEventFilter(event.target.value.toLowerCase());
+    setCurrentPage(1);
+  };
+
+  const handleSalesFilterChange = (event) => {
+    setSalesFilter(event.target.value.toLowerCase());
+    setCurrentPage(1);
+  };
+
+  const handleCommentFilterChange = (event) => {
+    setCommentFilter(event.target.value.toLowerCase());
+    setCurrentPage(1);
+  };
 
   const filteredData = performanceData.filter(performance =>
     Object.values(performance).some(value => 
       value.toString().toLowerCase().includes(filter)
-    )
+    ) && 
+    performance.date.toLowerCase().includes(dateFilter) &&
+    performance.state.toLowerCase().includes(stateFilter) &&
+    performance.city.toLowerCase().includes(cityFilter) &&
+    performance.event.toLowerCase().includes(eventFilter) &&
+    performance.sales.toString().includes(salesFilter) &&
+    performance.comment.toLowerCase().includes(commentFilter)
   );
 
   const renderData = () => {
@@ -177,25 +220,85 @@ const Sales = () => {
     <div className="sales-container">
       <h2>Értékesítés</h2>
       <div className="card">
-        <div className="sales-add-container">
-        <AddPerformanceForm onAdd={handleAddPerformance} />
-        </div>
-        <div className="sales-general-filter">
+      <div className="left-column">
+        
+        <div className="sales-general-filter" style={{ padding: '1rem', backgroundColor: 'white', opacity: 0.9 }}>
         <TextField
-          label="Filter"
-          variant="filled"
+          label="Kereső..."
           size="small"
           fullWidth
           value={filter}
           onChange={handleFilterChange}
-          style={{ marginBottom: "2rem"}}
         />
         </div>
+        <Box className="sales-advanced-filter" sx={{padding: 1, backgroundColor: "white", opacity: 0.9}}>Szűrő
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6} md={4}>
+          <TextField
+          label="Dátum"
+          size="small"
+          fullWidth
+          value={dateFilter}
+          onChange={handleDateFilterChange}
+        />
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+        <TextField
+          label="Megye"
+          size="small"
+          fullWidth
+          value={stateFilter}
+          onChange={handleStateFilterChange}
+        />
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+        <TextField
+          label="Város"
+          size="small"
+          fullWidth
+          value={cityFilter}
+          onChange={handleCityFilterChange}
+        />
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+        <TextField
+          label="Esemény"
+          size="small"
+          fullWidth
+          value={eventFilter}
+          onChange={handleEventFilterChange}
+        />
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+        <TextField
+          label="Eladás"
+          size="small"
+          fullWidth
+          value={salesFilter}
+          onChange={handleSalesFilterChange}
+        />
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+        <TextField
+          label="Komment"
+          size="small"
+          fullWidth
+          value={commentFilter}
+          onChange={handleCommentFilterChange}
+        />
+        </Grid>
+        </Grid>
+        </Box>
+        <div className="sales-add-container">
+        <AddPerformanceForm onAdd={handleAddPerformance} />
+        </div>
+        </div>
         {performanceData.length > 0 ? (
-          <div>
-          <TableContainer component={Paper} className="table-container">
-            <Table>
-              <TableHead className="table-head">
+          <div className="right-column">
+          <div className="table-container" style={{ padding: "1rem", width: "3500px", marginRight: "20%"}}>
+          <TableContainer component={Paper}>
+            <Table className="table" aria-label="simple table">
+              <TableHead className="table-head" >
                 <TableRow>
                   <TableCell onClick={() => handleSort("date")}>Dátum</TableCell>
                   <TableCell onClick={() => handleSort("state")}>Megye</TableCell>
@@ -203,8 +306,8 @@ const Sales = () => {
                   <TableCell onClick={() => handleSort("event")}>Esemény</TableCell>
                   <TableCell onClick={() => handleSort("sales")}>Eladás</TableCell>
                   <TableCell onClick={() => handleSort("comment")}>Komment</TableCell>
-                  <TableCell>Javítás</TableCell>
-                  <TableCell>Törlés</TableCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -234,6 +337,7 @@ const Sales = () => {
               onChange={handleGoToPage}
               inputProps={{min: 1, max: totalPage}}
               />
+              </div>
             </div>
           </div>
         ) : (
