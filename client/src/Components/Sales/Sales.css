@@ -4,39 +4,42 @@
 }
 
 .sales-container{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-left: 1%;
-  margin-top: 0%;
+  padding: 1em;
 }
 
 .card {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 1em;
+  display: flex;
   width: 100%;
   max-width: 1300px;
+  margin-top: 1em;
+}
+
+.left-column {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  padding-right: 1em;
+  box-sizing: border-box;
+}
+
+.right-column {
+  width: 70%;
 }
 
 .sales-add-container {
-  grid-column: 1 / 2;
-  max-width: 230px; 
-  max-height: 100px; 
-  margin-right: 1em; 
+  margin-bottom: 1em;
 }
 
-.sales-general-filter {
-  grid-column: 1 / 2;
-  margin-top: -40%;
+.sales-general-filter,
+.sales-advanced-filter {
+  color: black;
+  margin-bottom: 1em;
 }
 
 .table-container {
+  width: calc(600% - 530px);
+  height: calc(100vh - 200px);
   grid-column: 2 / 3;
-  width: 800%; 
-  max-width: 100%; 
-  overflow-x: auto;
-  margin: 0 auto;
 }
 
 .pagination-container{
@@ -55,5 +58,5 @@
 
 .table-head th,
 .table-body td {
-  width: 120px;
+  width: 80px;
 }
