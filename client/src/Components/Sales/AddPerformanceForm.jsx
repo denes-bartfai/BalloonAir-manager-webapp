@@ -33,7 +33,7 @@ const handleSubmit = (e) =>{
 };
 
   return (
-    <Paper style={{padding: "1em", marginBottom:"1em"}}>
+    <Paper style={{padding: "0.5em", marginBottom:"0.2em"}}>
         <form onSubmit={handleSubmit}>
             <TextField
                 label="Dátum"
