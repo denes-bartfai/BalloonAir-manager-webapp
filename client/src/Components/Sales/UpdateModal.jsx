@@ -71,8 +71,8 @@ const UpdateModal = ({performance, onClose, onSubmit}) => {
             fullWidth
             margin="normal"
           />
-          <Button type="submit" variant="contained" color="primary">Update</Button>
-          <Button onClick={onClose} variant="contained" color="secondary">Cancel</Button>
+          <Button type="submit" variant="contained" color="primary">Javítás</Button>
+          <Button onClick={onClose} variant="contained" color="secondary">Kilépés</Button>
         </form>
       </Box>
     </Modal>
